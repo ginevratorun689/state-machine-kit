@@ -30,5 +30,12 @@ Most state machine libraries do too much: history, parallel regions, entry actio
 
 A transition whose target state is not a key in `transitions` is rejected at construction, so you cannot define a path into nowhere. Unknown actions simply aren't in the lookup table, so `can('nope')` is `false` rather than throwing — the check is cheap and safe to call defensively. `send` returns the new state on success and throws on failure, so callers should wrap accordingly.
 
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
+
 ## License
 MIT
